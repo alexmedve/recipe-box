@@ -23,12 +23,13 @@
 
 <style lang="scss">
     .home {
+        padding: 50px 0 100px;
         &__arrow {
             position: absolute;
             width: 30px;
             height: 30px;
-            top: 75px;
             left: 38px;
+            top: -30px;
             animation-name: home-arrow-animation;
             animation-duration: 2s;
             animation-timing-function: ease-in-out;
@@ -46,7 +47,6 @@
         &__title {
             font-size: 30px;
             font-weight: 700;
-
         }
 
         &__image {

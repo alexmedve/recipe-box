@@ -1,31 +1,33 @@
 <template>
   <div class="recipe container">
     <div class="recipe__title">
-      Friptura
+      {{recipe.name}}
     </div>
     <div class="recipe__text">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui deleniti totam perferendis incidunt? Distinctio
-      quibusdam quia dolor ipsa nihil quaerat culpa? Suscipit, pariatur fugiat recusandae quasi excepturi quidem quis
-      laudantium.
+      {{recipe.text}}
     </div>
     <div class="recipe__subtitle">
       Ingredients
     </div>
     <ul class="recipe__ingredients">
-      <li class="recipe__ingredient" v-for="(ingredient, i) in ingredients" :key="i">
+      <li class="recipe__ingredient" v-for="(ingredient, i) in recipe.ingredients" :key="i">
         {{ingredient}}
       </li>
     </ul>
     <div class="recipe__subtitle">
-      How to
+      How to cook
     </div>
     <ol class="recipe__steps">
-      <li class="recipe__step"></li>
+      <li class="recipe__step" v-for="(step, i) in recipe.steps" :key="i">
+        {{step}}
+      </li>
     </ol>
   </div>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex';
+
   export default {
     data() {
       return {
@@ -33,6 +35,18 @@
           'garlic',
           'cucumber'
         ]
+      }
+    },
+    computed: {
+      ...mapGetters({
+        recipes: "recipes/recipes"
+      }),
+      recipe() {
+        var result = null;
+        for(let i=0; i<this.recipes.length; i++)
+          if(this.recipes[i].slug == this.$route.params.slug)
+            result = this.recipes[i];
+        return result;
       }
     },
     mounted() {

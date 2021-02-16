@@ -16,6 +16,11 @@ const routes = [
     component: () => import('@/views/Recipe/Index.vue')
   },
   {
+    path: '/new-recipe',
+    name: 'New Recipe',
+    component: () => import('@/views/RecipeAction')
+  },
+  {
     path: '*',
     redirect: '/'
   }

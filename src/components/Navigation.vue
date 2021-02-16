@@ -5,7 +5,7 @@
             <img src="@/assets/images/book-open-solid.svg" v-if="!sidebarActive">
             <img src="@/assets/images/times-solid.svg" v-else>
         </div>
-        <div class="navigation__title" @click="$router.push('/')">
+        <div class="navigation__title" @click="goToHome">
             SelfCook
         </div>
         <!-- Sidemenu  -->
@@ -20,7 +20,7 @@
                     <div v-else>
                         Ne pare rau
                     </div>
-                    <Button class="navigation__add-button" name="New Recipe" />
+                    <Button class="navigation__add-button" name="New Recipe" @click.native="goToNewRecipe"/>
                 </div>
             </div>
         </transition>
@@ -31,6 +31,8 @@
     import Input from './Input';
     import Button from './Button';
 
+    import {mapGetters} from 'vuex';
+
     export default {
         components: {
             Input,
@@ -38,24 +40,14 @@
         },
         data() {
             return {
-                sidebarActive: true,
-                recipes: [{
-                        name: 'Friptura de urs',
-                        slug: 'friptura-de-urs'
-                    },
-                    {
-                        name: 'Turkey recipe',
-                        slug: 'turkey-recipe'
-                    },
-                    {
-                        name: 'Ciorba de burta',
-                        slug: 'ciorba-de-burta'
-                    }
-                ],
+                sidebarActive: false,
                 search: ''
             }
         },
         computed: {
+            ...mapGetters({
+                recipes: "recipes/recipes"
+            }),
             filteredRecipes() {
                 return this.recipes.filter(recipe => {
                     return recipe.name.toLowerCase().includes(this.search.toLowerCase());
@@ -67,6 +59,14 @@
                 let nextRoute = '/recipe/' + slug;
                 if (nextRoute != this.$router.currentRoute.fullPath)
                     this.$router.push(nextRoute);
+            },
+            goToHome() {
+                if(this.$router.currentRoute.fullPath != '/')
+                    this.$router.push('/');
+            },
+            goToNewRecipe() {
+                if(this.$router.currentRoute.fullPath != '/new-recipe')
+                    this.$router.push('/new-recipe');
             },
             testEvent($event) {
                 console.log($event);
@@ -84,10 +84,13 @@
 
 <style lang="scss">
     .navigation {
-        position: sticky;
+        position: fixed;
+        top: 0;
+        left: 0;
         background: $color-secondary;
         padding: 0 40px;
         height: 60px;
+        width: 100%;
         display: flex;
         align-items: center;
 
@@ -118,7 +121,8 @@
             top: 60px;
             left: 0;
             height: calc(100vh - 60px);
-            width: 400px;
+            max-width: 400px;
+            width: 100%;
             display: flex;
             flex-direction: row;
             justify-content: center;
@@ -137,6 +141,7 @@
             width: 100%;
             overflow-y: auto;
             margin-top: 20px;
+            padding-bottom: 10px;
         }
 
         &__recipe {
