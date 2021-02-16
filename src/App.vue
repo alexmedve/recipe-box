@@ -16,7 +16,6 @@
 </script>
 
 <style lang="scss">
-
   * {
 
     &,
@@ -31,9 +30,18 @@
   html,
   body {
     font-family: 'Work Sans', sans-serif;
+    color: $color-white;
+    height: 100%;
   }
 
   body {
     background-color: $color-primary;
+    position: relative;
+  }
+
+  .container {
+    margin: 50px auto;
+    width: calc(100% - 30px);
+    max-width: 1200px;
   }
 </style>

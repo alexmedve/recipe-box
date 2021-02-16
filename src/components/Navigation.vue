@@ -6,17 +6,21 @@
             <img src="@/assets/images/times-solid.svg" v-else>
         </div>
         <div class="navigation__title" @click="$router.push('/')">
-            Recipe Book
+            SelfCook
         </div>
         <!-- Sidemenu  -->
         <transition name="slide-sidebar">
             <div class="navigation__sidebar" v-if="sidebarActive">
                 <div class="navigation__sidebar-container">
-                    <Input placeholder="Ex. Roasted beans" label="Search for a recipe" />
-                    <div class="navigation__recipes-list">
-                        <div class="navigation__recipe" v-for="(recipe, i) in recipes" :key="i"
-                            @click="$router.push(`/recipe/${recipe.slug}`)">{{recipe.name}}</div>
+                    <Input placeholder="Ex. Roasted beans" label="Search for a recipe" @input="search = $event" />
+                    <div class="navigation__recipes-list" v-if="filteredRecipes">
+                        <div class="navigation__recipe" v-for="(recipe, i) in filteredRecipes" :key="i"
+                            @click="goToRecipe(recipe.slug)">{{recipe.name}}</div>
                     </div>
+                    <div v-else>
+                        Ne pare rau
+                    </div>
+                    <Button class="navigation__add-button" name="New Recipe" />
                 </div>
             </div>
         </transition>
@@ -24,11 +28,13 @@
 </template>
 
 <script>
-    import Input from './Input'
+    import Input from './Input';
+    import Button from './Button';
 
     export default {
         components: {
-            Input
+            Input,
+            Button
         },
         data() {
             return {
@@ -45,7 +51,32 @@
                         name: 'Ciorba de burta',
                         slug: 'ciorba-de-burta'
                     }
-                ]
+                ],
+                search: ''
+            }
+        },
+        computed: {
+            filteredRecipes() {
+                return this.recipes.filter(recipe => {
+                    return recipe.name.toLowerCase().includes(this.search.toLowerCase());
+                })
+            }
+        },
+        methods: {
+            goToRecipe(slug) {
+                let nextRoute = '/recipe/' + slug;
+                if (nextRoute != this.$router.currentRoute.fullPath)
+                    this.$router.push(nextRoute);
+            },
+            testEvent($event) {
+                console.log($event);
+            }
+        },
+        watch: {
+            $route(to, from) {
+                this.sidebarActive = false;
+                console.log(to);
+                console.log(from);
             }
         }
     }
@@ -62,6 +93,7 @@
 
         &__button {
             font-weight: 700;
+            cursor: pointer;
             height: 25px;
             width: 25px;
 
@@ -75,7 +107,6 @@
 
         &__title {
             font-weight: 700;
-            color: $color-white;
             font-size: 24px;
             margin-left: 20px;
             cursor: pointer;
@@ -96,6 +127,9 @@
         &__sidebar-container {
             padding: 25px 0;
             width: 90%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
 
         &__recipes-list {
@@ -107,7 +141,6 @@
 
         &__recipe {
             padding: 10px 20px;
-            color: $color-white;
             font-size: 18px;
             cursor: pointer;
             border-radius: 5px;
@@ -121,6 +154,11 @@
             &:not(:last-child) {
                 border-bottom: 1px solid $color-white;
             }
+        }
+
+        &__add-button {
+            margin: 10px auto;
+            margin-bottom: 0;
         }
     }
 
