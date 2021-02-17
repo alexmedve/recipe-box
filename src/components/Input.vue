@@ -1,8 +1,8 @@
 <template>
-    <div class="input__container">
+    <div class="input">
         <div class="input__label">{{label}}</div>
         <input type="text" class="input__field" :placeholder="placeholder"
-            @input="$emit('input', $event.target.value)" :value="value">
+            @input="$emit('input', $event.target.value)" :value="value" :disabled="disabled">
     </div>
 </template>
 
@@ -20,13 +20,18 @@
             placeholder: {
                 type: String,
                 default: ''
+            },
+            disabled: {
+                type: Boolean,
+                default: false
             }
         }
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .input {
+        
         &__label {
             color: $color-white;
             font-size: 18px;

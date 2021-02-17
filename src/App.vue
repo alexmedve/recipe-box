@@ -19,8 +19,8 @@
     data() {
       return {
         testRecipes: [{
-            name: 'Friptura de urs',
-            slug: 'friptura-de-urs',
+            name: 'Friptura cu sos de',
+            slug: 'friptura-cu-sos-de',
             text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui deleniti totam perferendis incidunt? Distinctio quibusdam quia dolor ipsa nihil quaerat culpa? Suscipit, pariatur fugiat recusandae quasi excepturi quidem quis laudantium.',
             ingredients: [
               'milk',
@@ -31,7 +31,7 @@
             steps: [
               'boil water and asdasdsa',
               'season the meat',
-              'bon apetite sau cum se scrie'
+              'pofta mare'
             ]
           },
           {
@@ -47,7 +47,7 @@
             steps: [
               'boil water and asdasdsa',
               'season the meat',
-              'bon apetite sau cum se scrie'
+              'pofta mare'
             ]
           },
           {
@@ -63,7 +63,7 @@
             steps: [
               'boil water and asdasdsa',
               'season the meat',
-              'bon apetite sau cum se scrie'
+              'pofta mare'
             ]
           }
         ]

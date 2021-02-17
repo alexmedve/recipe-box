@@ -121,11 +121,15 @@
             top: 60px;
             left: 0;
             height: calc(100vh - 60px);
-            max-width: 400px;
+            max-width: 420px;
             width: 100%;
             display: flex;
             flex-direction: row;
             justify-content: center;
+
+            @media only screen and (max-width: 700px) {
+                max-width: 100%;
+            };
         }
 
         &__sidebar-container {
