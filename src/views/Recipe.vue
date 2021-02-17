@@ -22,13 +22,22 @@
         {{step}}
       </li>
     </ol>
+    <div class="recipe__buttons">
+      <Button name="Edit" @click.native="$router.push(`/edit/${recipe.slug}`)"/>
+      <Button name="Delete" @click.native="destroyRecipe"/>
+    </div>
   </div>
 </template>
 
 <script>
   import {mapGetters} from 'vuex';
+  import {mapActions} from 'vuex';
+  import Button from '@/components/Button';
 
   export default {
+    components: {
+      Button
+    },
     data() {
       return {
         ingredients: [
@@ -39,18 +48,32 @@
     },
     computed: {
       ...mapGetters({
-        recipes: "recipes/recipes"
+        recipes: "recipes/recipes",
+        currentRecipeId: "recipes/currentRecipeId"
       }),
       recipe() {
         var result = null;
         for(let i=0; i<this.recipes.length; i++)
           if(this.recipes[i].slug == this.$route.params.slug)
+          {
             result = this.recipes[i];
+            this.setRecipeId(i);
+          }
         return result;
       }
     },
+    methods: {
+      ...mapActions({
+        setRecipeId: 'recipes/setRecipeId',
+        deleteRecipe: 'recipes/deleteRecipe'
+      }),
+      destroyRecipe() {
+        this.deleteRecipe(this.currentRecipeId);
+        this.$router.push('/');
+      }
+    },
     mounted() {
-      console.log(this.$route.params.slug);
+      // console.log(this.$route.params.slug);
     }
   }
 </script>
@@ -79,6 +102,20 @@
     &__steps {
       margin-bottom: 25px;
       margin-left: 25px;
+    }
+
+    &__buttons {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      
+      & > :first-child {
+        margin-right: 10px;
+      }
+
+      & > * {
+        display: inline-block;
+      }
     }
   }
 </style>

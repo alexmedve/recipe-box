@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '@/views/Home'
+import Home from '@/views/Home.vue'
+import Recipe from '@/views/Recipe.vue'
+import RecipeAction from '@/views/RecipeAction.vue'
 
 Vue.use(VueRouter)
 
@@ -13,25 +15,22 @@ const routes = [
   {
     path: '/recipe/:slug',
     name: 'Recipe',
-    component: () => import('@/views/Recipe/Index.vue')
+    component: Recipe
   },
   {
     path: '/new-recipe',
-    name: 'New Recipe',
-    component: () => import('@/views/RecipeAction')
+    name: 'NewRecipe',
+    component: RecipeAction
+  },
+  {
+    path: '/edit/:slug',
+    name: 'EditRecipe',
+    component: RecipeAction
   },
   {
     path: '*',
     redirect: '/'
   }
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
 ]
 
 const router = new VueRouter({

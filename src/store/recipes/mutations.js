@@ -7,5 +7,8 @@ export default {
     },
     DELETE_RECIPE(state, recipeId) {
         state.recipes.splice(recipeId, 1);
+    },
+    SET_RECIPE_ID(state, id) {
+        state.currentRecipeId = id;
     }
 }

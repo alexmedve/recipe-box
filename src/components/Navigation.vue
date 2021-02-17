@@ -73,10 +73,8 @@
             }
         },
         watch: {
-            $route(to, from) {
-                this.sidebarActive = false;
-                console.log(to);
-                console.log(from);
+            $route() {
+                this.sidebarActive = false; 
             }
         }
     }

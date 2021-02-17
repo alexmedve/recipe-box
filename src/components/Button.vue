@@ -14,6 +14,10 @@ export default {
         disabled: {
             type: Boolean,
             default: false
+        },
+        bgColor: {
+            type: String,
+            default: ''
         }
     }
 }
@@ -32,7 +36,7 @@ export default {
     transition: all .2s;
 
     &:hover {
-        background-color: $color-primary;
+        transform: scale(1.05);
     }
 }
-</style>
+</style>,

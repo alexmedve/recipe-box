@@ -3,9 +3,12 @@ export default {
         commit('ADD_RECIPE', recipe);
     },
     editRecipe({commit}, recipe, recipdeId) {
-        commit('EDDIT_RECIPE', recipe, recipdeId);
+        commit('EDIT_RECIPE', recipe, recipdeId);
     },
     deleteRecipe({commit}, recipeId) {
         commit('DELETE_RECIPE', recipeId);
+    },
+    setRecipeId({commit}, id) {
+        commit('SET_RECIPE_ID', id);
     }
 }

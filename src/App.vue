@@ -19,14 +19,14 @@
     data() {
       return {
         testRecipes: [{
-            name: 'Friptura cu sos de',
-            slug: 'friptura-cu-sos-de',
+            name: 'Pesto Zoodles',
+            slug: 'pesto-zoodles',
             text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui deleniti totam perferendis incidunt? Distinctio quibusdam quia dolor ipsa nihil quaerat culpa? Suscipit, pariatur fugiat recusandae quasi excepturi quidem quis laudantium.',
             ingredients: [
-              'milk',
+              '3 tbsp. extra-virgin olive oil',
               'meat',
               'sugar',
-              '3 cups of water'
+              'Kosher salt'
             ],
             steps: [
               'boil water and asdasdsa',

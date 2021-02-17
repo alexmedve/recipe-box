@@ -1,16 +1,20 @@
 <template>
     <div class="recipe-action container">
-        <div class="recipe-action__title">
-            {{actionTitle}}
+        <div class="recipe-action__title" v-if="pageType == 'NewRecipe'">
+            New recipe
+        </div>
+        <div class="recipe-action__title" v-else>
+            Edit recipe
         </div>
         <div class="recipe-action__subtitle">
             Recipe name
         </div>
-        <Input class="recipe-action__input" placeholder="Ex. Cheesecake" @input="newRecipe.name = $event" />
+        <Input class="recipe-action__input" placeholder="Ex. Cheesecake" @input="newRecipe.name = $event" v-if="pageType == 'NewRecipe'"/>
+        <Input class="recipe-action__input" :value="newRecipe.name" placeholder="Ex. Cheesecake" @input="newRecipe.name = $event" :disabled="pageType == 'EditRecipe'" v-else/>
         <div class="recipe-action__subtitle">
             Recipe description
         </div>
-        <Textarea class="recipe-action__input" placeholder="This is a easy recipe you can make In under 5 mins..."
+        <Textarea class="recipe-action__input" :value="newRecipe.text" placeholder="This is a easy recipe you can make In under 5 mins..."
             @textarea="newRecipe.text = $event" />
         <div class="recipe-action__subtitle">
             Ingredients
@@ -37,12 +41,17 @@
             </div>
         </div>
         <div class="recipe-action__step">
-            <Textarea placeholder="Preaheat the oven at..." :value="newStep" @textarea="newStep = $event"/>
+            <Textarea placeholder="Preaheat the oven at..." @textarea="newStep = $event" v-if="pageType == 'NewRecipe'"/>
+            <Textarea placeholder="Preaheat the oven at..." :value="newStep" @textarea="newStep = $event" v-else/>
             <div class="recipe-action__add-field" @click="addStep">
                 <img src="@/assets/images/plus-solid.svg">
             </div>
         </div>
-        <Button name="Add Recipe" @click.native="createRecipe"/>
+        <div class="recipe-action__error-message" v-if="emptyFields">
+            Please fill all fields! It will make the cooking a lot easier :)
+        </div>
+        <Button name="Add Recipe" @click.native="createRecipe" bgColor="success" v-if="pageType == 'NewRecipe'"/>
+        <Button name="Save Changes" @click.native="saveChanges" bgColor="success" v-else/>
     </div>
 </template>
 
@@ -52,6 +61,7 @@
     import Button from '@/components/Button'
 
     import {mapActions} from 'vuex'
+    import {mapGetters} from 'vuex'
 
     export default {
         components: {
@@ -69,12 +79,15 @@
                     steps: []
                 },
                 newIngredient: '',
-                newStep: ''
+                newStep: '',
+                pageType: '',
+                emptyFields: false
             }
         },
         methods: {
             ...mapActions({
-                addRecipe: "recipes/addRecipe"
+                addRecipe: "recipes/addRecipe",
+                editRecipe: "recipes/editRecipe"
             }),
             addIngredient() {
                 if(this.newIngredient != '') {
@@ -98,21 +111,42 @@
                 return name.toLowerCase().replace(/ /g, '-');
             },
             createRecipe() {
-                if(this.newRecipe.name && this.newRecipe.text && this.newRecipe.ingredients && this.newRecipe.steps)
+                if(this.newRecipe.name !='' && this.newRecipe.text !='' && this.newRecipe.ingredients.length != 0 && this.newRecipe.steps.length != 0)
                 {
                     this.newRecipe.slug = this.generateSlug(this.newRecipe.name);
                     this.addRecipe(this.newRecipe);
-                    this.$router.push('/');
+                    this.$router.push(`/recipe/${this.newRecipe.slug}`);
                 }
+                else
+                    this.emptyFields = true;
+            },
+            initNewRecipe() {
+                this.newRecipe.name = '';
+                this.newRecipe.text = '';
+                this.newRecipe.slug = '';
+                this.newRecipe.slug = [];
+                this.newRecipe.slug = [];
+            },
+            saveChanges() {
+                if(this.newRecipe.text != '' && this.newRecipe.ingredients.length != 0 && this.newRecipe.steps.length != 0)
+                {
+                    this.editRecipe(this.newRecipe, this.currentRecipeId);
+                    this.$router.push(`/recipe/${this.newRecipe.slug}`);
+                }
+                else
+                    this.emptyFields = true;
             }
         },
         computed: {
-            actionTitle() {
-                if (this.$router.currentRoute.fullPath == '/new-recipe')
-                    return 'Create a new recipe';
-                else
-                    return 'Edit recipe';
-            }
+            ...mapGetters({
+                recipes: "recipes/recipes",
+                currentRecipeId: "recipes/currentRecipeId"
+            })
+        },
+        mounted() {
+            this.pageType = this.$route.name;
+            if(this.pageType == 'EditRecipe')
+                this.newRecipe = this.recipes[this.currentRecipeId];
         }
     }
 </script>
@@ -168,11 +202,24 @@
         }
 
         &__add-field {
-            background-color: #7CFC00;
+            background-color: $color-success;
         }
 
         &__delete-field {
-            background-color: #DC143C;
+            background-color: $color-danger;
+        }
+
+        &__error-message {
+            margin-bottom: 15px;
+            height: 40px;
+            width: 100%;
+            border-radius: 5px;
+            background-color: $color-danger;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 400;
+            padding: 0 20px;
         }
     }
 </style>
