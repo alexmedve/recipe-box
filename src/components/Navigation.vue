@@ -13,12 +13,12 @@
             <div class="navigation__sidebar" v-if="sidebarActive">
                 <div class="navigation__sidebar-container">
                     <Input placeholder="Ex. Roasted beans" label="Search for a recipe" @input="search = $event" />
-                    <div class="navigation__recipes-list" v-if="filteredRecipes">
+                    <div class="navigation__recipes-list" v-if="filteredRecipes != 0">
                         <div class="navigation__recipe" v-for="(recipe, i) in filteredRecipes" :key="i"
                             @click="goToRecipe(recipe.slug)">{{recipe.name}}</div>
                     </div>
-                    <div v-else>
-                        Ne pare rau
+                    <div class="navigation__no-recipes" v-else>
+                        You don't have any saved recipes!
                     </div>
                     <Button class="navigation__add-button" name="New Recipe" @click.native="goToNewRecipe"/>
                 </div>
@@ -161,6 +161,12 @@
             &:not(:last-child) {
                 border-bottom: 1px solid $color-white;
             }
+        }
+
+        &__no-recipes {
+            margin: 15px 0;
+            font-size: 18px;
+
         }
 
         &__add-button {
